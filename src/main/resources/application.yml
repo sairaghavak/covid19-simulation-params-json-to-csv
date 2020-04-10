@@ -1,0 +1,48 @@
+spring:
+  http:
+    converters:
+      preferred-json-mapper: jsonb
+
+server:
+  port: 2020
+  servlet:
+    context-path: /covid19params
+
+### Configurable messages
+messages:
+  errorMessage: Sorry couldn't convert input json to csv, error processing json \n
+  errorPrefix: Covid19Params-Json-To-Csv-Conversion-ERROR
+  ageBands:
+         - zeroToNine
+         - tenToNinteen
+         - twentyToTwentynine
+         - thirtyToThirtyNine
+         - fourtyToFourtyNine
+         - fiftyToFiftyNine
+         - sixtyToSixtyNine
+         - seventyToSeventyNine
+         - eightyPlus
+  ageBandMap:
+        zeroToNine: 0-9
+        tenToNinteen: 10-19
+        twentyToTwentynine: 20-29
+        thirtyToThirtyNine: 30-39
+        fourtyToFourtyNine: 40-49
+        fiftyToFiftyNine: 50-59
+        sixtyToSixtyNine: 60-69
+        seventyToSeventyNine: 70-79
+        eightyPlus: 80+
+  csvHeaders:
+         - age_bands
+         - age_distribution
+         - frac_severe
+         - frac_critical
+         - frac_fatal
+         - frac_isolated
+         - rate_recovery
+         - rate_severe
+         - rate_discharge
+         - rate_critical
+         - rate_stabilize
+         - rate_fatality
+         - rate_overflowfatality
