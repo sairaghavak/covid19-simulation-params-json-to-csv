@@ -2,6 +2,8 @@ spring:
   http:
     converters:
       preferred-json-mapper: jsonb
+  thymeleaf:
+    cache: false # default is true
 
 server:
   port: 2020

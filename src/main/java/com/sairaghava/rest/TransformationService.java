@@ -1,4 +1,4 @@
-package com.sairaghava;
+package com.sairaghava.rest;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;

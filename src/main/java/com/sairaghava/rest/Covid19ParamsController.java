@@ -1,4 +1,4 @@
-package com.sairaghava;
+package com.sairaghava.rest;
 
 import com.sairaghava.config.ExternalConfiguration;
 import com.sairaghava.schema.Covid19Params;

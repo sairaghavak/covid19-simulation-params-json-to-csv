@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>Covid19 Simulation Params Json to CSV formatter</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" th:href="@{/bootstrap-4.4.1-dist/css/bootstrap.min.css}" />
+</head>
+
+<body class="text-center">
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+      <div class="inner">
+        <h3 class="masthead-brand">Covid19 Params JSON to CSV Converter</h3>
+        <nav class="nav nav-masthead justify-content-center">
+        </nav>
+      </div>
+    </header>
+
+    <main role="main" class="my-5 ml-5 mr-5">
+      <div class="jumbotron border border-primary col-md-12">
+        <form method="post" th:action="@{/uploadJson}" enctype="multipart/form-data">
+          <div class="row ml-5">
+            <div class="col-md-3">
+              <input type="file" name="file" class="form-control-file">
+            </div>
+          </div>
+          <div class="row mt-5"></div>
+          <div class="ml-5">
+            <div class="col-md-3">
+              <button type="submit" class="btn btn-sm btn-secondary">Upload Json</button>
+            </div>
+          </div>
+        </form>
+        <div class="row mt-5"></div>
+        <div>
+          <p th:text="${serverUpdate}" th:if="${serverUpdate ne null}" class="alert alert-primary"
+            th:style="${serverUpdate ne null ? 'display:block' : 'display:none'}">
+          </p>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <a th:href="@{/downloadCsv}" class="btn btn-sm btn-secondary">Download CSV</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer mastfoot mt-auto">
+      <div class="inner">
+        <p><b>For any queries reach out to ksairaghava1@gmail.com</b></p>
+      </div>
+    </footer>
+
+  </div>
+  <script th:src="@{/jquery-3.5.0.min.js}"></script>
+  <script th:src="@{/popper.min.js}"></script>
+  <script th:src="@{/bootstrap-4.4.1-dist/js/bootstrap.min.js}"></script>
+</body>
+
+</html>
