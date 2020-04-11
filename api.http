@@ -1,6 +1,7 @@
 ### POST covid19params json to convert to csv
 
-POST http://localhost:2020/covid19params/json-to-csv
+###POST http://localhost:2020/covid19params/json-to-csv
+POST https://sairaghavak.herokuapp.com/covid19params/json-to-csv
 content-type: application/json
 
 {
