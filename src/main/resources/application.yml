@@ -13,6 +13,9 @@ server:
 ### Configurable messages
 messages:
   errorMessage: Sorry couldn't convert input json to csv, error processing json \n
+  wrongFileUploadErrorMessage: Error Please upload json file only
+  fileUploadSuccess: Uploaded {0} file successfuly
+  cantReadJsonFile: Error Cannot read input Json File 
   errorPrefix: Covid19Params-Json-To-Csv-Conversion-ERROR
   ageBands:
          - zeroToNine
