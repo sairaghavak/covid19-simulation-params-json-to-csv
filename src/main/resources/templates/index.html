@@ -21,10 +21,10 @@
 
     <main role="main" class="my-5 ml-5 mr-5">
       <div class="jumbotron border border-primary col-md-12">
-        <form method="post" th:action="@{/uploadJson}" enctype="multipart/form-data">
+        <form method="post" th:action="@{/uploadjson}" enctype="multipart/form-data">
           <div class="row ml-5">
             <div class="col-md-3">
-              <input type="file" name="file" class="form-control-file">
+              <input type="file" name="inputFile" class="form-control-file">
             </div>
           </div>
           <div class="row mt-5"></div>
@@ -36,7 +36,8 @@
         </form>
         <div class="row mt-5"></div>
         <div>
-          <p th:text="${serverUpdate}" th:if="${serverUpdate ne null}" class="alert alert-primary"
+          <p th:text="${serverUpdate}" th:if="${serverUpdate ne null}" class="alert"
+            th:classappend="${isError} ? alert-danger : alert-success"
             th:style="${serverUpdate ne null ? 'display:block' : 'display:none'}">
           </p>
         </div>
