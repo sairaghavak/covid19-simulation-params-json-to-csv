@@ -11,6 +11,9 @@ import lombok.Data;
 @ConfigurationProperties(prefix = "messages")
 public class ExternalConfiguration {
   private String errorMessage;
+  private String wrongFileUploadErrorMessage;
+  private String fileUploadSuccess;
+  private String cantReadJsonFile;
   private String errorPrefix;
   private List<String> ageBands;
   private List<String> csvHeaders;
