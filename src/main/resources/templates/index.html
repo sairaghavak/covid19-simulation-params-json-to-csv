@@ -41,7 +41,7 @@
             th:style="${serverUpdate ne null ? 'display:block' : 'display:none'}">
           </p>
         </div>
-        <div class="row">
+        <div class="row" th:if="${isError ne null && !isError}">
           <form method="post" th:action="@{/downloadcsv}">
             <div class="col-md-3">
               <input type="hidden" name="csv" th:value="${csvFile}">

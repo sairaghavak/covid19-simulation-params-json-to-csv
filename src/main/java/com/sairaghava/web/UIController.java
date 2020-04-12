@@ -50,11 +50,11 @@ public class UIController {
       String url = generateAbsoluteRestUrl(request.getRequestURL(), "/api/uploadjson");
       ResponseEntity<?> response = null;
       try {
-        isError = false;
         response = restTemplate.postForEntity(url, httpEntity, String.class);
         redirectAttributes.addFlashAttribute("csvFile", response.getBody().toString());
         serverUpdate = MessageFormat.format(externalConfig.getFileUploadSuccess(),
             inputFile.getOriginalFilename());
+        isError = false;
       } catch (HttpStatusCodeException e) {
         response = ResponseEntity.badRequest().body(e.getResponseBodyAsString());
         serverUpdate = response.getBody().toString();
