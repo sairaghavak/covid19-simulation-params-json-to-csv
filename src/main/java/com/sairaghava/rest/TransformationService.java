@@ -2,6 +2,7 @@ package com.sairaghava.rest;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 import com.sairaghava.config.ExternalConfiguration;
 import com.sairaghava.schema.Covid19Params;
 import com.sairaghava.utils.JsonToCsvConverter;
@@ -21,8 +22,21 @@ public class TransformationService {
       return jsonToCsvConverter.runAsWebService(covid19Params);
     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
         | IntrospectionException e) {
-      log.error(externalConfig.getErrorPrefix() + e);
-      return externalConfig.getErrorPrefix() + e.getLocalizedMessage();
+      log.error(externalConfig.getErrorPrefix(), e);
+      return externalConfig.getErrorPrefix() + "-" + e.getLocalizedMessage();
     }
   }
+
+  boolean isItAJsonFile(String fileName) {
+    if (Objects.isNull(fileName)) {
+      return false;
+    }
+    int index = fileName.lastIndexOf(".");
+    String fileExtension = "";
+    if (index > 0) {
+      fileExtension = fileName.substring(index + 1);
+    }
+    return "json".equalsIgnoreCase(fileExtension) ? true : false;
+  }
+
 }
