@@ -42,9 +42,13 @@
           </p>
         </div>
         <div class="row">
-          <div class="col-md-3">
-            <a th:href="@{/downloadCsv}" class="btn btn-sm btn-secondary">Download CSV</a>
-          </div>
+          <form method="post" th:action="@{/downloadcsv}">
+            <div class="col-md-3">
+              <input type="hidden" name="csv" th:value="${csvFile}">
+              <button type="submit" class="btn btn-sm btn-secondary">Download CSV</button>
+            </div>
+          </form>
+
         </div>
       </div>
     </main>

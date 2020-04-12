@@ -1,9 +1,13 @@
 package com.sairaghava.web;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Objects;
 import javax.json.bind.JsonbException;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.Response;
+import com.sairaghava.config.ExternalConfiguration;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UIController {
   private final RestTemplate restTemplate;
+  private final ExternalConfiguration externalConfig;
 
   @GetMapping("/")
   public String home() {
@@ -35,31 +40,48 @@ public class UIController {
   public String uploadJson(@RequestParam("inputFile") MultipartFile inputFile,
       RedirectAttributes redirectAttributes, HttpServletRequest request)
       throws JsonbException, IOException {
-    redirectAttributes.addFlashAttribute("isError", false);
+    String serverUpdate = "";
+    boolean isError = true;
     if (Objects.isNull(inputFile) || inputFile.isEmpty()) {
-      redirectAttributes.addFlashAttribute("isError", true);
-      redirectAttributes.addFlashAttribute("serverUpdate", "Please select the file");
+      serverUpdate = "Please select the file";
     } else {
-      // Set headers
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-      // Set body
-      MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-      body.add("inputFile", inputFile.getResource());
-      // Wrap headers, body to HttpEntity
-      HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-
-      String url = request.getRequestURL().substring(0, request.getRequestURL().lastIndexOf("/"))
-          + "/api/uploadjson";
+      HttpEntity<MultiValueMap<String, Object>> httpEntity =
+          getRequestEntity("inputFile", inputFile.getResource());
+      String url = generateAbsoluteRestUrl(request.getRequestURL(), "/api/uploadjson");
       ResponseEntity<?> response = null;
       try {
-        response = restTemplate.postForEntity(url, requestEntity, String.class);
+        isError = false;
+        response = restTemplate.postForEntity(url, httpEntity, String.class);
+        redirectAttributes.addFlashAttribute("csvFile", response.getBody().toString());
+        serverUpdate = MessageFormat.format(externalConfig.getFileUploadSuccess(),
+            inputFile.getOriginalFilename());
       } catch (HttpStatusCodeException e) {
         response = ResponseEntity.badRequest().body(e.getResponseBodyAsString());
-        redirectAttributes.addFlashAttribute("isError", true);
+        serverUpdate = response.getBody().toString();
       }
-      redirectAttributes.addFlashAttribute("serverUpdate", response.getBody().toString());
     }
+    redirectAttributes.addFlashAttribute("isError", isError);
+    redirectAttributes.addFlashAttribute("serverUpdate", serverUpdate);
     return "redirect:/";
+  }
+
+  @PostMapping("/downloadcsv")
+  public ResponseEntity<?> downloadCsv(@RequestParam("csv") String csv) {
+    return ResponseEntity.ok()
+        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=covid19-params.csv")
+        .contentType(MediaType.TEXT_PLAIN).contentLength(csv.getBytes().length).body(csv);
+  }
+
+  private HttpEntity<MultiValueMap<String, Object>> getRequestEntity(final String key,
+      final Resource resource) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+    MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+    body.add(key, resource);
+    return new HttpEntity<>(body, headers);
+  }
+
+  private String generateAbsoluteRestUrl(final StringBuffer sb, final String apiSuffix) {
+    return sb.substring(0, sb.lastIndexOf("/")) + apiSuffix;
   }
 }

@@ -50,9 +50,7 @@ public class Covid19ParamsController {
       try {
         Covid19Params covid19Params =
             JsonBConfig.getJsonb().fromJson(inputFile.getInputStream(), Covid19Params.class);
-        log.info("FileContent = " + JsonBConfig.getJsonb().toJson(covid19Params));
-        result = ResponseEntity.ok()
-            .body(MessageFormat.format(externalConfig.getFileUploadSuccess(), fileName));
+        result = ResponseEntity.ok().body(transFormationService.convertJsonToCsv(covid19Params));
       } catch (JsonParsingException | JsonbException | IOException e) {
         log.error(externalConfig.getCantReadJsonFile(), e);
         result = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
