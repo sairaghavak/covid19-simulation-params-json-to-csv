@@ -3,7 +3,7 @@
 **Agenda**
 - Converts a Json exported from https://covid19-scenarios.org/ to csv format
 - Here are the falttened csv columns
-    ![](./expected-csv.png)
+    ![](./expected-csv.PNG)
 
 **Usage**
 1. Using Web UI
